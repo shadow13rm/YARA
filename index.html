@@ -3,197 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Everything</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500&family=Amiri&display=swap" rel="stylesheet">
-    
+    <title>Happy Birthday!</title>
     <style>
-        :root {
-            --primary: #e94f9e;
-            --shadow: rgba(0, 0, 0, 0.2);
-        }
-
-        *{ margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Poppins', 'Amiri', serif;
-            background: radial-gradient(circle, #fff5f9 0%, #f9f3f9 100%);
-            text-align: center;
-            overflow-x: hidden;
-            perspective: 1000px;
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: #fff;
         }
 
-        .page {
-            display: none;
-            padding: 40px 20px;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        .page.active { display: flex; animation: fadeIn 0.5s ease; }
-
-        .title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 38px;
-            color: var(--primary);
-            margin-bottom: 30px;
-        }
-
-        /* الهدية 3D تهتز */
-        .gift {
-            font-size: 100px;
-            cursor: pointer;
-            animation: shake3D 2s infinite ease-in-out;
-            transform-style: preserve-3d;
-            display: inline-block;
-        }
-
-        @keyframes shake3D {
-            0%, 100% { transform: rotateY(0deg); }
-            25% { transform: rotateY(20deg) rotateX(10deg); }
-            75% { transform: rotateY(-20deg) rotateX(-10deg); }
-        }
-
-        /* زر 3D */
-        .btn {
-            background: #ff77c5;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 50px;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 6px #d14d8b, 0 10px 15px var(--shadow);
-            transition: 0.2s;
-        }
-        .btn:active {
-            box-shadow: 0 2px #d14d8b;
-            transform: translateY(4px);
-        }
-
-        /* البطاقات 3D - تم ضبط الاتجاه ليكون اليسار هو البداية */
-        .cards {
-            display: flex;
-            gap: 15px;
-            margin: 40px 0;
-            justify-content: center;
-            direction: ltr; /* للتأكد من أن الترتيب يبدأ من اليسار */
-        }
-
-        .card-container {
-            width: 85px;
-            height: 120px;
-            perspective: 1000px;
-        }
-
-        .card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-
-        .card.flipped { transform: rotateY(180deg); }
-
-        .card-front, .card-back {
+        /* زر البداية */
+        #btn-container {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
-            justify-content: center;
             align-items: center;
-            border-radius: 15px;
-            font-weight: bold;
-            box-shadow: 0 8px 15px var(--shadow);
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+            user-select: none;
         }
 
-        .card-front { background: #ffd6ea; color: #e94f9e; font-size: 30px; }
-        .card-back { background: white; color: var(--primary); transform: rotateY(180deg); font-size: 22px; border: 2px solid #ffd6ea; }
+        .heart-btn {
+            font-size: 35px;
+            animation: pulse 1.2s infinite;
+            margin-right: 15px;
+        }
 
-        /* الرسالة النهائية */
-        .final-message {
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .btn-text {
+            font-size: 16px;
+            color: #ffb3c6;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* نصوص المعايدة */
+        #text-container {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            pointer-events: none;
+        }
+
+        .line {
+            font-size: 17px;
             opacity: 0;
-            max-width: 500px;
-            margin-top: 30px;
-            padding: 25px;
-            color: #d14d8b;
-            font-size: 20px;
-            line-height: 1.8;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            transition: 1.5s ease;
-            transform: translateY(20px);
-            direction: rtl; /* لجعل النص العربي يظهر بشكل صحيح */
+            transform: translateY(15px);
+            transition: opacity 1s ease, transform 1s ease;
+            text-shadow: 0 0 4px rgba(0,0,0,0.8);
         }
-        .final-message.show { opacity: 1; transform: translateY(0); }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* توافق مع شاشات الهواتف */
+        @media (max-width: 768px) {
+            #text-container {
+                left: 5%;
+                top: 15%;
+                gap: 12px;
+            }
+            .line { font-size: 14px; }
+            .heart-btn { font-size: 30px; }
+            .btn-text { font-size: 14px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="page1" class="page active">
-        <h1 class="title">I have a gift for you...</h1>
-        <div class="gift" id="gift">🎁</div>
-    </div>
+<div id="btn-container" onclick="startAnimation()">
+    <div class="heart-btn">🩷</div>
+    <div class="btn-text">Click Me :)<br>Birthday Queen !</div>
+</div>
 
-    <div id="page2" class="page">
-        <div style="font-size: 80px; margin-bottom: 20px;">❤️</div>
-        <h2 class="title" style="font-size: 30px;">You are special!</h2>
-        <button class="btn" id="open2">Click Here</button>
-    </div>
+<div id="text-container"></div>
 
-    <div id="page3" class="page">
-        <h2 class="title" style="font-size: 28px;">Open the cards in order</h2>
-        <div class="cards">
-            <div class="card-container">
-                <div class="card" onclick="flipCard(this)">
-                    <div class="card-front">1</div>
-                    <div class="card-back">I</div>
-                </div>
-            </div>
-            <div class="card-container">
-                <div class="card" onclick="flipCard(this)">
-                    <div class="card-front">2</div>
-                    <div class="card-back">Love</div>
-                </div>
-            </div>
-            <div class="card-container">
-                <div class="card" onclick="flipCard(this)">
-                    <div class="card-front">3</div>
-                    <div class="card-back">You❤️</div>
-                </div>
-            </div>
-        </div>
-        <div id="finalMessage" class="final-message">
-            الصراحة مش عارف شو احكيلك بس كثير بحبك و بدي أشكرك على كل لحظة و على كل شي سويتيه معي انتي أغلى شي عندي و مستحيل استغني عنك انتي بالنسبة ل الي حبيبتي و صاحبيتي و مكاني الأمن يلي إذا في شي انتي بتحفظيفه من كل قلبك كلامك حلو و بجنن و فش منك و مستحيل ألاقيكي زيك بحبك يعمري
-        </div>
-    </div>
+<canvas id="canvas"></canvas>
 
-    <script>
-        document.getElementById("gift").onclick = () => showPage("page2");
-        document.getElementById("open2").onclick = () => showPage("page3");
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-        function showPage(id) {
-            document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-            document.getElementById(id).classList.add("active");
+    let branches = [];
+    let leaves = [];
+    let treeGrown = false;
+    let textStarted = false;
+
+    const leafColors = ['#ff4d4d', '#ff9999', '#ffcc00', '#ff66b2', '#ffccff', '#ff9933'];
+    const textLines = [
+        "Hey you 💘",
+        "Happy Birthday 🎀",
+        "May God bless you 🎈",
+        "And give u many happiness 🌟",
+        "Just saying ... you're pretty awesome 🫶🏻",
+        "Sending good vibes and maybe a wink 😉",
+        "Hope u have a great day today ❤️"
+    ];
+
+    function startAnimation() {
+        const btn = document.getElementById('btn-container');
+        btn.style.opacity = '0';
+        setTimeout(() => {
+            btn.style.display = 'none';
+            // بدء نمو الشجرة
+            let trunkLength = Math.min(canvas.height * 0.22, 180);
+            branches.push(new Branch(canvas.width / 2, canvas.height, -Math.PI / 2, trunkLength, 10, 16));
+            requestAnimationFrame(render);
+        }, 500);
+    }
+
+    class Branch {
+        constructor(x, y, angle, length, depth, width) {
+            this.x = x;
+            this.y = y;
+            this.angle = angle;
+            this.length = length;
+            this.depth = depth;
+            this.width = width;
+            this.currentLength = 0;
+            this.speed = length / 12; 
+            this.done = false;
+            
+            this.endX = this.x + Math.cos(this.angle) * this.length;
+            this.endY = this.y + Math.sin(this.angle) * this.length;
         }
-
-        let openedCards = 0;
-        function flipCard(cardElement) {
-            if (!cardElement.classList.contains("flipped")) {
-                cardElement.classList.add("flipped");
-                openedCards++;
-                if (openedCards === 3) {
-                    setTimeout(() => {
-                        document.getElementById("finalMessage").classList.add("show");
-                    }, 1000);
+        
+        update() {
+            if (this.done) return;
+            
+            let prevLength = this.currentLength;
+            this.currentLength += this.speed;
+            
+            if (this.currentLength >= this.length) {
+                this.currentLength = this.length;
+                this.done = true;
+                
+                // تفرع الشجرة
+                if (this.depth > 0) {
+                    let branchesCount = (Math.random() > 0.4 || this.depth > 8) ? 2 : 3;
+                    for (let i = 0; i < branchesCount; i++) {
+                        let newAngle = this.angle + (Math.random() * 0.7 - 0.35);
+                        let newLength = this.length * (0.75 + Math.random() * 0.1);
+                        let newWidth = this.width * 0.7;
+                        branches.push(new Branch(this.endX, this.endY, newAngle, newLength, this.depth - 1, newWidth));
+                    }
                 }
             }
+            
+            let curX = this.x + Math.cos(this.angle) * prevLength;
+            let curY = this.y + Math.sin(this.angle) * prevLength;
+            let nextX = this.x + Math.cos(this.angle) * this.currentLength;
+            let nextY = this.y + Math.sin(this.angle) * this.currentLength;
+
+            ctx.beginPath();
+            ctx.moveTo(curX, curY);
+            ctx.lineTo(nextX, nextY);
+            ctx.lineWidth = this.width;
+            ctx.strokeStyle = '#ffb3c6';
+            ctx.lineCap = 'round';
+            ctx.stroke();
         }
-    </script>
+    }
+
+    class Leaf {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 2.5 + 2; 
+            this.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+            this.scale = 0;
+            this.maxScale = 1;
+            this.delay = Math.floor(Math.random() * 80); 
+            this.done = false;
+        }
+        
+        update() {
+            if (this.done) return;
+            if (this.delay > 0) {
+                this.delay--;
+                return;
+            }
+            
+            this.scale += 0.08;
+            if (this.scale >= this.maxScale) {
+                this.scale = this.maxScale;
+                this.done = true;
+            }
+            
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.scale(this.scale, this.scale);
+            ctx.fillStyle = this.color;
+            
+            // رسم قلب صغير
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(0, -this.size, -this.size*2, -this.size, -this.size*2, 0);
+            ctx.bezierCurveTo(-this.size*2, this.size, 0, this.size*1.5, 0, this.size*2);
+            ctx.bezierCurveTo(0, this.size*1.5, this.size*2, this.size, this.size*2, 0);
+            ctx.bezierCurveTo(this.size*2, -this.size, 0, -this.size, 0, 0);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    // خوارزمية تشكيل القلب الكبير من الأوراق
+    function startBloom() {
+        let centerX = canvas.width / 2;
+        let centerY = canvas.height * 0.42;
+        let heartScale = Math.min(canvas.width, canvas.height) * 0.35; 
+        
+        let bloomCount = 1800; // كثافة القلوب
+        let attempts = 0;
+        
+        while (leaves.length < bloomCount && attempts < 30000) {
+            attempts++;
+            let nx = (Math.random() - 0.5) * 3; 
+            let ny = (Math.random() - 0.5) * 3;
+            // معادلة رسم القلب رياضياً لتوزيع الأوراق داخله
+            let val = nx*nx + Math.pow(ny - Math.cbrt(nx*nx), 2);
+            
+            if (val < 1) {
+                let px = centerX + nx * heartScale;
+                let py = centerY - ny * heartScale;
+                leaves.push(new Leaf(px, py));
+            }
+        }
+    }
+
+    // ظهور النصوص بالترتيب
+    function showText() {
+        let container = document.getElementById('text-container');
+        let delay = 0;
+        textLines.forEach((line) => {
+            let el = document.createElement('div');
+            el.className = 'line';
+            el.innerText = line;
+            container.appendChild(el);
+
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, delay);
+            delay += 1200; 
+        });
+    }
+
+    // محرك الأنيميشن الرئيسي
+    function render() {
+        let growing = false;
+        let currentBranches = branches.slice();
+        branches = []; 
+        
+        for (let b of currentBranches) {
+            b.update();
+            if (!b.done) {
+                branches.push(b);
+                growing = true;
+            }
+        }
+        
+        // عندما تنتهي الشجرة من النمو، تبدأ الأوراق بالظهور
+        if (!growing && branches.length === 0 && !treeGrown) {
+            treeGrown = true;
+            startBloom();
+        }
+        
+        let leavesGrowing = false;
+        for (let l of leaves) {
+            if (!l.done) {
+                l.update();
+                leavesGrowing = true;
+            }
+        }
+        
+        if (growing || leavesGrowing || branches.length > 0) {
+            requestAnimationFrame(render);
+        } else if (treeGrown && !textStarted) {
+            textStarted = true;
+            setTimeout(showText, 500);
+        }
+    }
+</script>
 </body>
 </html>
